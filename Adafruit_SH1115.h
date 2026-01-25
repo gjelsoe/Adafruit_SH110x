@@ -1,0 +1,65 @@
+/*!
+ * @file Adafruit_CH1115.h
+ *
+ * This is part of for Adafruit's CH1115 library for monochrome
+ * OLED displays: http://www.adafruit.com/category/63_98
+ *
+ * These displays use I2C or SPI to communicate. I2C requires 2 pins
+ * (SCL+SDA) and optionally a RESET pin. SPI requires 4 pins (MOSI, SCK,
+ * select, data/command) and optionally a reset pin. Hardware SPI or
+ * 'bitbang' software SPI are both supported.
+ *
+ * Adafruit invests time and resources providing this open source code,
+ * please support Adafruit and open-source hardware by purchasing
+ * products from Adafruit!
+ *
+ * Written by Limor Fried/Ladyada for Adafruit Industries, with
+ * contributions from the open source community.
+ *
+ * BSD license, all text above, and the splash screen header file,
+ * must be included in any redistribution.
+ *
+ */
+
+#ifndef _Adafruit_CH1115_H_
+#define _Adafruit_CH1115_H_
+
+#include <Adafruit_SH110X.h>
+
+// CH1115 specific commands
+#define CH1115_SETBREATHING 0x23        ///< Breathing display effect
+#define CH1115_SETADDSCROLL 0x24        ///< Additional horizontal scroll setup
+#define CH1115_SETSCROLLMODE 0x28       ///< Set scroll mode
+#define CH1115_SETPUMPVOLTAGE 0x30      ///< Set pump voltage (0x30-0x33)
+#define CH1115_SETIREF 0x82             ///< IREF resistor set
+#define CH1115_SETSEGPADS 0xA2          ///< Set SEG pads hardware configuration
+#define CH1115_SETDCDCCONTROL 0xAD      ///< DC-DC control mode set
+#define CH1115_SETDCDC 0x8B             ///< DC-DC ON (use 0x8A for OFF)
+#define CH1115_SETADAPTIVESAVE 0xD7     ///< Adaptive power save ON
+#define CH1115_SETROWPERIOD 0xDC        ///< Row non-overlap/SEG Hiz period
+
+/*!
+    @brief  Class for interfacing with CH1115 OLED displays
+*/
+class Adafruit_CH1115 : public Adafruit_SH110X {
+public:
+  Adafruit_CH1115(uint16_t w, uint16_t h, TwoWire *twi = &Wire,
+                  int8_t rst_pin = -1, uint32_t preclk = 400000,
+                  uint32_t postclk = 100000);
+  Adafruit_CH1115(uint16_t w, uint16_t h, int8_t mosi_pin, int8_t sclk_pin,
+                  int8_t dc_pin, int8_t rst_pin, int8_t cs_pin);
+  Adafruit_CH1115(uint16_t w, uint16_t h, SPIClass *spi, int8_t dc_pin,
+                  int8_t rst_pin, int8_t cs_pin, uint32_t bitrate = 8000000UL);
+
+  bool begin(uint8_t i2caddr = 0x3C, bool reset = true);
+  
+  // CH1115 specific features
+  void setBreathing(bool enable, uint8_t maxBrightness = 0, uint8_t interval = 1);
+  void setPumpVoltage(uint8_t voltage);
+  void setAdaptivePowerSave(bool enable);
+
+private:
+  void CH1115_command1(uint8_t c);
+};
+
+#endif // _Adafruit_CH1115_H_
