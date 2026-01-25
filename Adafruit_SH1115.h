@@ -27,16 +27,16 @@
 #include <Adafruit_SH110X.h>
 
 // SH1115 specific commands
-#define CH1115_SETBREATHING 0x23        ///< Breathing display effect
-#define CH1115_SETADDSCROLL 0x24        ///< Additional horizontal scroll setup
-#define CH1115_SETSCROLLMODE 0x28       ///< Set scroll mode
-#define CH1115_SETPUMPVOLTAGE 0x30      ///< Set pump voltage (0x30-0x33)
-#define CH1115_SETIREF 0x82             ///< IREF resistor set
-#define CH1115_SETSEGPADS 0xA2          ///< Set SEG pads hardware configuration
-#define CH1115_SETDCDCCONTROL 0xAD      ///< DC-DC control mode set
-#define CH1115_SETDCDC 0x8B             ///< DC-DC ON (use 0x8A for OFF)
-#define CH1115_SETADAPTIVESAVE 0xD7     ///< Adaptive power save ON
-#define CH1115_SETROWPERIOD 0xDC        ///< Row non-overlap/SEG Hiz period
+#define SH1115_SETBREATHING 0x23        ///< Breathing display effect
+#define SH1115_SETADDSCROLL 0x24        ///< Additional horizontal scroll setup
+#define SH1115_SETSCROLLMODE 0x28       ///< Set scroll mode
+#define SH1115_SETPUMPVOLTAGE 0x30      ///< Set pump voltage (0x30-0x33)
+#define SH1115_SETIREF 0x82             ///< IREF resistor set
+#define SH1115_SETSEGPADS 0xA2          ///< Set SEG pads hardware configuration
+#define SH1115_SETDCDCCONTROL 0xAD      ///< DC-DC control mode set
+#define SH1115_SETDCDC 0x8B             ///< DC-DC ON (use 0x8A for OFF)
+#define SH1115_SETADAPTIVESAVE 0xD7     ///< Adaptive power save ON
+#define SH1115_SETROWPERIOD 0xDC        ///< Row non-overlap/SEG Hiz period
 
 /*!
     @brief  Class for interfacing with CH1115 OLED displays
