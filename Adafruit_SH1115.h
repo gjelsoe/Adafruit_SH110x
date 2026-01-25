@@ -21,12 +21,12 @@
  *
  */
 
-#ifndef _Adafruit_CH1115_H_
-#define _Adafruit_CH1115_H_
+#ifndef _Adafruit_SH1115_H_
+#define _Adafruit_SH1115_H_
 
 #include <Adafruit_SH110X.h>
 
-// CH1115 specific commands
+// SH1115 specific commands
 #define CH1115_SETBREATHING 0x23        ///< Breathing display effect
 #define CH1115_SETADDSCROLL 0x24        ///< Additional horizontal scroll setup
 #define CH1115_SETSCROLLMODE 0x28       ///< Set scroll mode
@@ -41,25 +41,25 @@
 /*!
     @brief  Class for interfacing with CH1115 OLED displays
 */
-class Adafruit_CH1115 : public Adafruit_SH110X {
+class Adafruit_SH1115 : public Adafruit_SH110X {
 public:
-  Adafruit_CH1115(uint16_t w, uint16_t h, TwoWire *twi = &Wire,
+  Adafruit_SH1115(uint16_t w, uint16_t h, TwoWire *twi = &Wire,
                   int8_t rst_pin = -1, uint32_t preclk = 400000,
                   uint32_t postclk = 100000);
-  Adafruit_CH1115(uint16_t w, uint16_t h, int8_t mosi_pin, int8_t sclk_pin,
+  Adafruit_SH1115(uint16_t w, uint16_t h, int8_t mosi_pin, int8_t sclk_pin,
                   int8_t dc_pin, int8_t rst_pin, int8_t cs_pin);
-  Adafruit_CH1115(uint16_t w, uint16_t h, SPIClass *spi, int8_t dc_pin,
+  Adafruit_SH1115(uint16_t w, uint16_t h, SPIClass *spi, int8_t dc_pin,
                   int8_t rst_pin, int8_t cs_pin, uint32_t bitrate = 8000000UL);
 
   bool begin(uint8_t i2caddr = 0x3C, bool reset = true);
   
-  // CH1115 specific features
+  // SH1115 specific features
   void setBreathing(bool enable, uint8_t maxBrightness = 0, uint8_t interval = 1);
   void setPumpVoltage(uint8_t voltage);
   void setAdaptivePowerSave(bool enable);
 
 private:
-  void CH1115_command1(uint8_t c);
+  void SH1115_command1(uint8_t c);
 };
 
-#endif // _Adafruit_CH1115_H_
+#endif // _Adafruit_SH1115_H_
