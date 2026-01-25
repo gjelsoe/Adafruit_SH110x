@@ -1,11 +1,11 @@
 /*!
- * @file Adafruit_CH1115.cpp
+ * @file Adafruit_SH1115.cpp
  *
- * @mainpage Adafruit CH1115 OLED library
+ * @mainpage Adafruit SH1115 OLED library
  *
  * @section intro_sec Introduction
  *
- * This is the documentation for Adafruit's CH1115 driver for monochrome
+ * This is the documentation for Adafruit's SH1115 driver for monochrome
  * OLED displays. This chip is similar to SH1106 but has some differences
  * in initialization and features.
  *
@@ -34,7 +34,7 @@
 // CONSTRUCTORS, DESTRUCTOR ------------------------------------------------
 
 /*!
-    @brief  Constructor for I2C-interfaced CH1115 displays.
+    @brief  Constructor for I2C-interfaced SH1115 displays.
     @param  w
             Display width in pixels
     @param  h
@@ -51,15 +51,15 @@
     @param  clkAfter
             Speed (in Hz) for Wire transmissions following library calls.
 */
-Adafruit_CH1115::Adafruit_CH1115(uint16_t w, uint16_t h, TwoWire *twi,
+Adafruit_SH1115::Adafruit_SH1115(uint16_t w, uint16_t h, TwoWire *twi,
                                  int8_t rst_pin, uint32_t preclk,
                                  uint32_t postclk)
     : Adafruit_SH110X(w, h, twi, rst_pin, preclk, postclk) {
-  _page_start_offset = 0;  // CH1115 is 128x64, no column offset needed (unlike SH1106)
+  _page_start_offset = 0;  // SH1115 is 128x64, no column offset needed (unlike SH1106)
 }
 
 /*!
-    @brief  Constructor for SPI CH1115 displays, using software (bitbang)
+    @brief  Constructor for SPI SH1115 displays, using software (bitbang)
             SPI.
     @param  w
             Display width in pixels
@@ -82,7 +82,7 @@ Adafruit_CH1115::Adafruit_CH1115(uint16_t w, uint16_t h, TwoWire *twi,
             Chip-select pin (using Arduino pin numbering) for sharing the
             bus with other devices. Active low.
 */
-Adafruit_CH1115::Adafruit_CH1115(uint16_t w, uint16_t h, int8_t mosi_pin,
+Adafruit_SH1115::Adafruit_SH1115(uint16_t w, uint16_t h, int8_t mosi_pin,
                                  int8_t sclk_pin, int8_t dc_pin,
                                  int8_t rst_pin, int8_t cs_pin)
     : Adafruit_SH110X(w, h, mosi_pin, sclk_pin, dc_pin, rst_pin, cs_pin) {
@@ -90,7 +90,7 @@ Adafruit_CH1115::Adafruit_CH1115(uint16_t w, uint16_t h, int8_t mosi_pin,
 }
 
 /*!
-    @brief  Constructor for SPI CH1115 displays, using native hardware SPI.
+    @brief  Constructor for SPI SH1115 displays, using native hardware SPI.
     @param  w
             Display width in pixels
     @param  h
@@ -112,7 +112,7 @@ Adafruit_CH1115::Adafruit_CH1115(uint16_t w, uint16_t h, int8_t mosi_pin,
             SPI clock rate for transfers to this display. Default is
             8000000UL (8 MHz).
 */
-Adafruit_CH1115::Adafruit_CH1115(uint16_t w, uint16_t h, SPIClass *spi,
+Adafruit_SH1115::Adafruit_SH1115(uint16_t w, uint16_t h, SPIClass *spi,
                                  int8_t dc_pin, int8_t rst_pin, int8_t cs_pin,
                                  uint32_t bitrate)
     : Adafruit_SH110X(w, h, spi, dc_pin, rst_pin, cs_pin, bitrate) {
@@ -139,13 +139,13 @@ Adafruit_CH1115::Adafruit_CH1115(uint16_t w, uint16_t h, SPIClass *spi,
             proceeding.
     @note   MUST call this function before any drawing or updates!
 */
-bool Adafruit_CH1115::begin(uint8_t i2caddr, bool reset) {
+bool Adafruit_SH1115::begin(uint8_t i2caddr, bool reset) {
 
   if (!Adafruit_SH110X::_init(i2caddr, reset)) {
     return false;
   }
 
-  // CH1115-specific initialization sequence
+  // SH1115-specific initialization sequence
   // Based on datasheet Power On and Initialization section
   
   static const uint8_t init_sequence[] = {
@@ -164,17 +164,17 @@ bool Adafruit_CH1115::begin(uint8_t i2caddr, bool reset) {
     SH110X_SETSTARTLINE | 0x00,   // 0x40 - Start line 0
     
     // Charge pump (DC-DC converter)
-    CH1115_SETDCDCCONTROL,        // 0xAD
-    CH1115_SETDCDC,               // 0x8B - Enable DC-DC
+    SH1115_SETDCDCCONTROL,        // 0xAD
+    SH1115_SETDCDC,               // 0x8B - Enable DC-DC
     
     // Pump voltage
-    CH1115_SETPUMPVOLTAGE | 0x02, // 0x32 - 8.0V (default)
+    SH1115_SETPUMPVOLTAGE | 0x02, // 0x32 - 8.0V (default)
     
     // Segment remap and COM configuration
     SH110X_SEGREMAP | 0x01,       // 0xA1 - Column address 127 mapped to SEG0
     SH110X_COMSCANDEC,            // 0xC8 - Scan from COM[N-1] to COM0
     
-    CH1115_SETSEGPADS | 0x00,     // 0xA2 - SEG pads: Even on the left
+    SH1115_SETSEGPADS | 0x00,     // 0xA2 - SEG pads: Even on the left
     
     SH110X_SETCOMPINS,            // 0xDA
     0x12,                         // Alternative COM config, disable remap
@@ -186,7 +186,7 @@ bool Adafruit_CH1115::begin(uint8_t i2caddr, bool reset) {
     SH110X_SETVCOMDETECT,         // 0xDB
     0x35,                         // VCOM deselect level (POR value)
     
-    CH1115_SETROWPERIOD,          // 0xDC
+    SH1115_SETROWPERIOD,          // 0xDC
     0x01,                         // Row non-overlap: 3 DCLKs (default)
     
     // Display settings
@@ -196,7 +196,7 @@ bool Adafruit_CH1115::begin(uint8_t i2caddr, bool reset) {
     SH110X_NORMALDISPLAY,         // 0xA6 - Normal display (not inverted)
     SH110X_DISPLAYALLON_RESUME,   // 0xA4 - Resume from RAM
     
-    CH1115_SETADAPTIVESAVE,       // 0xD7 - Enable adaptive power save
+    SH1115_SETADAPTIVESAVE,       // 0xD7 - Enable adaptive power save
     
     // Clear display RAM
     SH110X_SETPAGEADDR,           // Set page address
@@ -205,7 +205,7 @@ bool Adafruit_CH1115::begin(uint8_t i2caddr, bool reset) {
   };
 
   for (uint8_t i = 0; i < sizeof(init_sequence); i++) {
-    CH1115_command1(init_sequence[i]);
+    SH1115_command1(init_sequence[i]);
   }
 
   // Clear the display RAM
@@ -215,7 +215,7 @@ bool Adafruit_CH1115::begin(uint8_t i2caddr, bool reset) {
   delay(100); // Wait for display to stabilize
   
   // Turn on display
-  CH1115_command1(SH110X_DISPLAYON); // 0xAF
+  SH1115_command1(SH110X_DISPLAYON); // 0xAF
 
   return true;
 }
@@ -223,17 +223,17 @@ bool Adafruit_CH1115::begin(uint8_t i2caddr, bool reset) {
 // COMMANDS ----------------------------------------------------------------
 
 /*!
-    @brief  Issue a single low-level command directly to the CH1115
+    @brief  Issue a single low-level command directly to the SH1115
             display, bypassing the library.
     @param  c
             Command byte to send
     @return None (void).
 */
-void Adafruit_CH1115::CH1115_command1(uint8_t c) {
+void Adafruit_SH1115::SH1115_command1(uint8_t c) {
   SH110X_command(c);
 }
 
-// CH1115 SPECIFIC FEATURES ------------------------------------------------
+// SH1115 SPECIFIC FEATURES ------------------------------------------------
 
 /*!
     @brief  Enable or disable breathing display effect.
@@ -250,9 +250,9 @@ void Adafruit_CH1115::CH1115_command1(uint8_t c) {
             0 = 1 frame, 1 = 2 frames (default), ..., 7 = 8 frames
     @return None (void).
 */
-void Adafruit_CH1115::setBreathing(bool enable, uint8_t maxBrightness, 
+void Adafruit_SH1115::setBreathing(bool enable, uint8_t maxBrightness, 
                                    uint8_t interval) {
-  CH1115_command1(CH1115_SETBREATHING);
+  SH1115_command1(SH1115_SETBREATHING);
   
   uint8_t config = 0;
   if (enable) {
@@ -261,7 +261,7 @@ void Adafruit_CH1115::setBreathing(bool enable, uint8_t maxBrightness,
   config |= ((maxBrightness & 0x03) << 3); // A4-A3
   config |= (interval & 0x07);              // A2-A0
   
-  CH1115_command1(config);
+  SH1115_command1(config);
 }
 
 /*!
@@ -275,8 +275,8 @@ void Adafruit_CH1115::setBreathing(bool enable, uint8_t maxBrightness,
     @return None (void).
     @note   Make sure VDD2 voltage supports the selected pump voltage.
 */
-void Adafruit_CH1115::setPumpVoltage(uint8_t voltage) {
-  CH1115_command1(CH1115_SETPUMPVOLTAGE | (voltage & 0x03));
+void Adafruit_SH1115::setPumpVoltage(uint8_t voltage) {
+  SH1115_command1(SH1115_SETPUMPVOLTAGE | (voltage & 0x03));
 }
 
 /*!
@@ -287,10 +287,10 @@ void Adafruit_CH1115::setPumpVoltage(uint8_t voltage) {
     @note   Adaptive power save reduces power consumption when fewer
             pixels are lit.
 */
-void Adafruit_CH1115::setAdaptivePowerSave(bool enable) {
+void Adafruit_SH1115::setAdaptivePowerSave(bool enable) {
   if (enable) {
-    CH1115_command1(CH1115_SETADAPTIVESAVE); // 0xD7
+    SH1115_command1(SH1115_SETADAPTIVESAVE); // 0xD7
   } else {
-    CH1115_command1(0xD6); // Normal mode
+    SH1115_command1(0xD6); // Normal mode
   }
 }
