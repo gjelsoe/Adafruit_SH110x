@@ -133,4 +133,17 @@ public:
 
   bool begin(uint8_t i2caddr = 0x3C, bool reset = true);
 };
+
+/*!
+    @brief  Class that stores state and functions for interacting with
+            SH1115 OLED displays.
+*/
+class Adafruit_SH1115 : public Adafruit_SH110X {
+public:
+  Adafruit_SH1115(uint16_t w, uint16_t h, TwoWire *twi = &Wire,
+                  int8_t rst_pin = -1, uint32_t clkDuring = 400000UL,
+                  uint32_t clkAfter = 100000UL);
+
+  bool begin(uint8_t i2caddr = 0x3C, bool reset = true);
+};
 #endif // _Adafruit_SH110X_H_
