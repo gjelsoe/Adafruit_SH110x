@@ -28,7 +28,7 @@
  *
  */
 
-#include "Adafruit_CH1115.h"
+#include "Adafruit_SH1115.h"
 #include "splash.h"
 
 // CONSTRUCTORS, DESTRUCTOR ------------------------------------------------
