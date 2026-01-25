@@ -206,12 +206,9 @@ bool Adafruit_SH1115::begin(uint8_t i2caddr, bool reset) {
 
   // Send init commands
   uint8_t *ptr = (uint8_t *)init_sequence;
-  uint8_t dc_byte = 0x00;
-  uint8_t bytes_out = 1;
   
   for (uint8_t i = 0; i < sizeof(init_sequence); i++) {
-    uint8_t cmd[2] = {dc_byte, ptr[i]};
-    sendCommand(cmd, 2);
+    oled_command(ptr[i]);
   }
 
   // Clear the display RAM
@@ -221,8 +218,7 @@ bool Adafruit_SH1115::begin(uint8_t i2caddr, bool reset) {
   delay(100); // Wait for display to stabilize
   
   // Turn on display
-  uint8_t displayon_cmd[2] = {0x00, SH110X_DISPLAYON}; // 0xAF
-  sendCommand(displayon_cmd, 2);
+  oled_command(SH110X_DISPLAYON); // 0xAF
 
   return true;
 }
@@ -246,8 +242,7 @@ bool Adafruit_SH1115::begin(uint8_t i2caddr, bool reset) {
 */
 void Adafruit_SH1115::setBreathing(bool enable, uint8_t maxBrightness, 
                                    uint8_t interval) {
-  uint8_t cmd1[2] = {0x00, SH1115_SETBREATHING};
-  sendCommand(cmd1, 2);
+  oled_command(SH1115_SETBREATHING);
   
   uint8_t config = 0;
   if (enable) {
@@ -256,8 +251,7 @@ void Adafruit_SH1115::setBreathing(bool enable, uint8_t maxBrightness,
   config |= ((maxBrightness & 0x03) << 3); // A4-A3
   config |= (interval & 0x07);              // A2-A0
   
-  uint8_t cmd2[2] = {0x00, config};
-  sendCommand(cmd2, 2);
+  oled_command(config);
 }
 
 /*!
@@ -272,8 +266,7 @@ void Adafruit_SH1115::setBreathing(bool enable, uint8_t maxBrightness,
     @note   Make sure VDD2 voltage supports the selected pump voltage.
 */
 void Adafruit_SH1115::setPumpVoltage(uint8_t voltage) {
-  uint8_t cmd[2] = {0x00, (uint8_t)(SH1115_SETPUMPVOLTAGE | (voltage & 0x03))};
-  sendCommand(cmd, 2);
+  oled_command(SH1115_SETPUMPVOLTAGE | (voltage & 0x03));
 }
 
 /*!
@@ -285,6 +278,5 @@ void Adafruit_SH1115::setPumpVoltage(uint8_t voltage) {
             pixels are lit.
 */
 void Adafruit_SH1115::setAdaptivePowerSave(bool enable) {
-  uint8_t cmd[2] = {0x00, enable ? SH1115_SETADAPTIVESAVE : (uint8_t)0xD6};
-  sendCommand(cmd, 2);
+  oled_command(enable ? SH1115_SETADAPTIVESAVE : 0xD6);
 }
