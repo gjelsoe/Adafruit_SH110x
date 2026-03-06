@@ -46,9 +46,9 @@
             Reset pin (using Arduino pin numbering), or -1 if not used
             (some displays might be wired to share the microcontroller's
             reset pin).
-    @param  clkDuring
+    @param  preclk
             Speed (in Hz) for Wire transmissions in library calls.
-    @param  clkAfter
+    @param  postclk
             Speed (in Hz) for Wire transmissions following library calls.
 */
 Adafruit_SH1115::Adafruit_SH1115(uint16_t w, uint16_t h, TwoWire *twi,
