@@ -147,66 +147,66 @@ bool Adafruit_SH1115::begin(uint8_t i2caddr, bool reset) {
 
   // SH1115-specific initialization sequence
   // Based on CH1115 datasheet Power On and Initialization section
-  
+
   static const uint8_t init_sequence[] = {
-    SH110X_DISPLAYOFF,           // 0xAE - Display OFF
-    
-    // Display configuration
-    SH110X_SETDISPLAYCLOCKDIV,   // 0xD5
-    0x50,                         // Default divide ratio (POR value)
-    
-    SH110X_SETMULTIPLEX,          // 0xA8
-    0x3F,                         // 64 MUX (for 128x64 display)
-    
-    SH110X_SETDISPLAYOFFSET,      // 0xD3
-    0x00,                         // No offset
-    
-    SH110X_SETSTARTLINE | 0x00,   // 0x40 - Start line 0
-    
-    // Charge pump (DC-DC converter)
-    SH1115_SETDCDCCONTROL,        // 0xAD
-    SH1115_SETDCDC,               // 0x8B - Enable DC-DC
-    
-    // Pump voltage
-    SH1115_SETPUMPVOLTAGE | 0x02, // 0x32 - 8.0V (default)
-    
-    // Segment remap and COM configuration
-    SH110X_SEGREMAP | 0x01,       // 0xA1 - Column address 127 mapped to SEG0
-    SH110X_COMSCANDEC,            // 0xC8 - Scan from COM[N-1] to COM0
-    
-    SH1115_SETSEGPADS | 0x00,     // 0xA2 - SEG pads: Even on the left
-    
-    SH110X_SETCOMPINS,            // 0xDA
-    0x12,                         // Alternative COM config, disable remap
-    
-    // Timing and driving
-    SH110X_SETPRECHARGE,          // 0xD9
-    0x22,                         // Discharge=2 DCLKs, Pre-charge=2 DCLKs (POR)
-    
-    SH110X_SETVCOMDETECT,         // 0xDB
-    0x35,                         // VCOM deselect level (POR value)
-    
-    SH1115_SETROWPERIOD,          // 0xDC
-    0x01,                         // Row non-overlap: 3 DCLKs (default)
-    
-    // Display settings
-    SH110X_SETCONTRAST,           // 0x81
-    0x80,                         // Contrast = 128 (POR value)
-    
-    SH110X_NORMALDISPLAY,         // 0xA6 - Normal display (not inverted)
-    SH110X_DISPLAYALLON_RESUME,   // 0xA4 - Resume from RAM
-    
-    SH1115_SETADAPTIVESAVE,       // 0xD7 - Enable adaptive power save
-    
-    // Clear display RAM
-    SH110X_SETPAGEADDR,           // Set page address
-    SH110X_SETLOWCOLUMN,          // Set lower column address
-    SH110X_SETHIGHCOLUMN,         // Set higher column address
+      SH110X_DISPLAYOFF, // 0xAE - Display OFF
+
+      // Display configuration
+      SH110X_SETDISPLAYCLOCKDIV, // 0xD5
+      0x50,                       // Default divide ratio (POR value)
+
+      SH110X_SETMULTIPLEX, // 0xA8
+      0x3F,                // 64 MUX (for 128x64 display)
+
+      SH110X_SETDISPLAYOFFSET, // 0xD3
+      0x00,                    // No offset
+
+      SH110X_SETSTARTLINE | 0x00, // 0x40 - Start line 0
+
+      // Charge pump (DC-DC converter)
+      SH1115_SETDCDCCONTROL, // 0xAD
+      SH1115_SETDCDC,        // 0x8B - Enable DC-DC
+
+      // Pump voltage
+      SH1115_SETPUMPVOLTAGE | 0x02, // 0x32 - 8.0V (default)
+
+      // Segment remap and COM configuration
+      SH110X_SEGREMAP | 0x01, // 0xA1 - Column address 127 mapped to SEG0
+      SH110X_COMSCANDEC,      // 0xC8 - Scan from COM[N-1] to COM0
+
+      SH1115_SETSEGPADS | 0x00, // 0xA2 - SEG pads: Even on the left
+
+      SH110X_SETCOMPINS, // 0xDA
+      0x12,              // Alternative COM config, disable remap
+
+      // Timing and driving
+      SH110X_SETPRECHARGE, // 0xD9
+      0x22,                // Discharge=2 DCLKs, Pre-charge=2 DCLKs (POR)
+
+      SH110X_SETVCOMDETECT, // 0xDB
+      0x35,                 // VCOM deselect level (POR value)
+
+      SH1115_SETROWPERIOD, // 0xDC
+      0x01,                // Row non-overlap: 3 DCLKs (default)
+
+      // Display settings
+      SH110X_SETCONTRAST, // 0x81
+      0x80,               // Contrast = 128 (POR value)
+
+      SH110X_NORMALDISPLAY,       // 0xA6 - Normal display (not inverted)
+      SH110X_DISPLAYALLON_RESUME, // 0xA4 - Resume from RAM
+
+      SH1115_SETADAPTIVESAVE, // 0xD7 - Enable adaptive power save
+
+      // Clear display RAM
+      SH110X_SETPAGEADDR,  // Set page address
+      SH110X_SETLOWCOLUMN, // Set lower column address
+      SH110X_SETHIGHCOLUMN, // Set higher column address
   };
 
   // Send init commands
   uint8_t *ptr = (uint8_t *)init_sequence;
-  
+
   for (uint8_t i = 0; i < sizeof(init_sequence); i++) {
     oled_command(ptr[i]);
   }
@@ -240,17 +240,17 @@ bool Adafruit_SH1115::begin(uint8_t i2caddr, bool reset) {
             0 = 1 frame, 1 = 2 frames (default), ..., 7 = 8 frames
     @return None (void).
 */
-void Adafruit_SH1115::setBreathing(bool enable, uint8_t maxBrightness, 
+void Adafruit_SH1115::setBreathing(bool enable, uint8_t maxBrightness,
                                    uint8_t interval) {
   oled_command(SH1115_SETBREATHING);
-  
+
   uint8_t config = 0;
   if (enable) {
     config |= 0x10; // Set ON/OFF bit
   }
   config |= ((maxBrightness & 0x03) << 3); // A4-A3
   config |= (interval & 0x07);              // A2-A0
-  
+
   oled_command(config);
 }
 
