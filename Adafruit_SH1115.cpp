@@ -1,27 +1,16 @@
 /*!
  * @file Adafruit_SH1115.cpp
  *
- * @mainpage Adafruit SH1115 OLED library
+ * This is part of Adafruit's SH1115 driver for monochrome OLED displays.
+ * The SH1115 (also known as CH1115) is similar to SH1106 but has some
+ * differences in initialization and features.
  *
- * @section intro_sec Introduction
- *
- * This is the documentation for Adafruit's SH1115 driver for monochrome
- * OLED displays. The SH1115 (also known as CH1115) is similar to SH1106
- * but has some differences in initialization and features.
- *
- * @section dependencies Dependencies
- *
- * This library depends on <a
- * href="https://github.com/adafruit/Adafruit-GFX-Library"> Adafruit_GFX</a>
- * being present on your system. Please make sure you have installed the latest
- * version before using this library.
- *
- * @section author Author
+ * Adafruit invests time and resources providing this open source code,
+ * please support Adafruit and open-source hardware by purchasing
+ * products from Adafruit!
  *
  * Written by Limor Fried/Ladyada for Adafruit Industries, with
  * contributions from the open source community.
- *
- * @section license License
  *
  * BSD license, all text above, and the splash screen included below,
  * must be included in any redistribution.
