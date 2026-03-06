@@ -6,7 +6,7 @@
  * @section intro_sec Introduction
  *
  * This is the documentation for Adafruit's SH1115 driver for monochrome
- * OLED displays. The SH1115 (also known as CH1115) is similar to SH1106 
+ * OLED displays. The SH1115 (also known as CH1115) is similar to SH1106
  * but has some differences in initialization and features.
  *
  * @section dependencies Dependencies
@@ -55,7 +55,8 @@ Adafruit_SH1115::Adafruit_SH1115(uint16_t w, uint16_t h, TwoWire *twi,
                                  int8_t rst_pin, uint32_t preclk,
                                  uint32_t postclk)
     : Adafruit_SH110X(w, h, twi, rst_pin, preclk, postclk) {
-  _page_start_offset = 0;  // SH1115 is 128x64, no column offset needed (unlike SH1106)
+  _page_start_offset =
+      0; // SH1115 is 128x64, no column offset needed (unlike SH1106)
 }
 
 /*!
