@@ -83,8 +83,8 @@ Adafruit_SH1115::Adafruit_SH1115(uint16_t w, uint16_t h, TwoWire *twi,
             bus with other devices. Active low.
 */
 Adafruit_SH1115::Adafruit_SH1115(uint16_t w, uint16_t h, int8_t mosi_pin,
-                                 int8_t sclk_pin, int8_t dc_pin,
-                                 int8_t rst_pin, int8_t cs_pin)
+                                 int8_t sclk_pin, int8_t dc_pin, int8_t rst_pin,
+                                 int8_t cs_pin)
     : Adafruit_SH110X(w, h, mosi_pin, sclk_pin, dc_pin, rst_pin, cs_pin) {
   _page_start_offset = 0;
 }
@@ -153,7 +153,7 @@ bool Adafruit_SH1115::begin(uint8_t i2caddr, bool reset) {
 
       // Display configuration
       SH110X_SETDISPLAYCLOCKDIV, // 0xD5
-      0x50,                       // Default divide ratio (POR value)
+      0x50,                      // Default divide ratio (POR value)
 
       SH110X_SETMULTIPLEX, // 0xA8
       0x3F,                // 64 MUX (for 128x64 display)
@@ -199,8 +199,8 @@ bool Adafruit_SH1115::begin(uint8_t i2caddr, bool reset) {
       SH1115_SETADAPTIVESAVE, // 0xD7 - Enable adaptive power save
 
       // Clear display RAM
-      SH110X_SETPAGEADDR,  // Set page address
-      SH110X_SETLOWCOLUMN, // Set lower column address
+      SH110X_SETPAGEADDR,   // Set page address
+      SH110X_SETLOWCOLUMN,  // Set lower column address
       SH110X_SETHIGHCOLUMN, // Set higher column address
   };
 
@@ -216,7 +216,7 @@ bool Adafruit_SH1115::begin(uint8_t i2caddr, bool reset) {
   display();
 
   delay(100); // Wait for display to stabilize
-  
+
   // Turn on display
   oled_command(SH110X_DISPLAYON); // 0xAF
 
@@ -249,7 +249,7 @@ void Adafruit_SH1115::setBreathing(bool enable, uint8_t maxBrightness,
     config |= 0x10; // Set ON/OFF bit
   }
   config |= ((maxBrightness & 0x03) << 3); // A4-A3
-  config |= (interval & 0x07);              // A2-A0
+  config |= (interval & 0x07);             // A2-A0
 
   oled_command(config);
 }
